@@ -9,9 +9,9 @@ fn main() -> io::Result<()> {
 fn part_one() -> io::Result<()> {
     let file = File::open("sonarSweep.txt")?;
     let mut reader = BufReader::new(file);
-    let mut last_sweep_string = String::new();
-    reader.read_line(&mut last_sweep_string)?;
-    let mut last_sweep = last_sweep_string.trim().parse::<i32>().unwrap();
+    let mut last_sweep = String::new();
+    reader.read_line(&mut last_sweep)?;
+    let mut last_sweep = last_sweep.trim().parse::<i32>().unwrap();
 
     let mut increments = 0;
     for line in reader.lines() {
@@ -23,29 +23,27 @@ fn part_one() -> io::Result<()> {
     }
     println!("Increments Part 1: {}", increments);
     Ok(())
-
 }
 
 fn part_two() -> io::Result<()> {
     let file = File::open("sonarSweep.txt")?;
     let mut reader = BufReader::new(file);
-    let mut last_sweep_string = String::new();
-    let mut window_values = vec![];
+    let mut last_sweep = String::new();
+    let mut window = vec![];
     for _i in 0..3 {
-        last_sweep_string.clear();
-        reader.read_line(&mut last_sweep_string)?;
-        window_values.push(last_sweep_string.trim().parse::<i32>().unwrap());
+        last_sweep.clear();
+        reader.read_line(&mut last_sweep)?;
+        window.push(last_sweep.trim().parse::<i32>().unwrap());
     }
     let mut increments = 0;
     for line in reader.lines() {
         let sweep = line.unwrap().parse::<i32>().unwrap();
-        if window_values[1] + window_values[2] + sweep > window_values.iter().sum() {
+        if window[1] + window[2] + sweep > window.iter().sum() {
             increments += 1;
         }
-        window_values.rotate_left(1);
-        let n = window_values.len() - 1;
-        let last = &mut window_values[n];
-        *last = sweep;
+        window.rotate_left(1);
+        let last = window.len() - 1;
+        window[last] = sweep;
     }
     println!("Increments Part 2: {}", increments);
     Ok(())
