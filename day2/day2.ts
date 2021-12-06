@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-function part1(): Number {
+function part1(): number {
   let file = fs.readFileSync('commands.txt','utf8');
   let commands = file.split(/\n/)
   commands.pop()
@@ -27,7 +27,7 @@ function part1(): Number {
   return position["horizontal"] * position["depth"]
 }
 
-function part2(): Number {
+function part2(): number {
   let file = fs.readFileSync('prueba.txt','utf8');
   let commands = file.split(/\n/)
   commands.pop()
@@ -55,7 +55,6 @@ function part2(): Number {
     }
   }
   return position["horizontal"] * position["depth"]
-
 }
 
 function main() {
