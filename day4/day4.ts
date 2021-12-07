@@ -1,4 +1,4 @@
-import * as fs from 'fs';
+import * as fs from 'fs'
 
 interface HashTable {
   [key: number]: boolean
@@ -7,6 +7,7 @@ interface HashTable {
 class Board {
   private values: HashTable = {}
   private board: number[][] = []
+  private hasWin: boolean
   constructor(arr: number[], columnN: number) {
     for (const value of arr) {
       this.values[value] = false
@@ -18,9 +19,10 @@ class Board {
       }
       this.board.push(row)
     }
+    this.hasWin = false
   }
   mark(number: number): number {
-    if (this.values[number] == true || this.values[number] == undefined) {
+    if (this.hasWin || this.values[number] == true || this.values[number] == undefined) {
       return -1 // That number is already marked, or doesn't exist in the board
     }
     this.values[number] = true
@@ -28,6 +30,7 @@ class Board {
       for (let column = 0; column < this.board[row].length; column++) {
         if (this.board[row][column] == number) {
           if (this.checkBingo(row, column)) {
+            this.hasWin = true
             let result = 0
             for (const value in this.values) {
               if (!this.values[value]) {
@@ -66,6 +69,7 @@ class Board {
 function main() {
   const lines = fs.readFileSync("input.txt", "utf-8").split("\n")
   const input = lines[0].split(",").map(element => parseInt(element))
+  lines.shift()
   let boards: Board[] = []
   let boardRows: number[] = []
   let columnN = 0
@@ -79,10 +83,11 @@ function main() {
       boardRows.push(...numbers)
     }
   }
-  console.log(play(input, boards))
+  // console.log("Part1 solution: ", part1(input,boards))
+  console.log("Part2 solution: ", part2(input,boards))
 }
 
-function play(input: number[], boards: Board[]): number {
+function part1(input: number[], boards: Board[]): number {
   for (const num of input) {
     for (const board of boards) {
       let result = board.mark(num)
@@ -91,6 +96,25 @@ function play(input: number[], boards: Board[]): number {
       }
     }
   }
+  console.log("No solution")
+  return -1
+}
+
+function part2(input: number[], boards: Board[]): number {
+  let lastresult = -1 
+  for (const num of input) {
+    for (const board of boards) {
+      let result = board.mark(num)
+      if (result > 0) {
+        lastresult = result
+      }
+    }
+  }
+  if (lastresult < 0) {
+    console.log("No solution")
+    return -1
+  }
+  return lastresult
 }
 
 main()
