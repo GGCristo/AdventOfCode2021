@@ -10,6 +10,13 @@ type ventLine = {
   endpoint2: point,
 }
 
+function minmax<T>(a: T, b: T): [T, T] {
+  if (a < b) {
+    return [a, b]
+  }
+  return [b, a]
+}
+
 function readData(): [ventLine[], number[][]] {
   let lines = fs.readFileSync("./hydrotermalVents.txt", "utf-8").split("\n")
   lines.pop()
@@ -39,33 +46,44 @@ function readData(): [ventLine[], number[][]] {
   return [ventLines, matrix]
 }
 
-function part1(ventLines: ventLine[], matrix: number[][]) :number {
+function run(ventLines: ventLine[], matrix: number[][]) :number {
   let overlapping = 0
   for (let ventLine of ventLines) {
     if (ventLine.endpoint1.x === ventLine.endpoint2.x) {
-      let yIter = Math.min(ventLine.endpoint1.y, ventLine.endpoint2.y) 
-      let yEnd = Math.max(ventLine.endpoint1.y, ventLine.endpoint2.y)
+      let [yIter, yEnd] = minmax(ventLine.endpoint1.y, ventLine.endpoint2.y) 
       for (; yIter <= yEnd; yIter++) {
         matrix[yIter][ventLine.endpoint1.x]++
         overlapping = matrix[yIter][ventLine.endpoint1.x] === 2 ? overlapping+1: overlapping
       }
     } else if (ventLine.endpoint1.y === ventLine.endpoint2.y) {
-      let xIter = Math.min(ventLine.endpoint1.x, ventLine.endpoint2.x)
-      let xEnd = Math.max(ventLine.endpoint1.x, ventLine.endpoint2.x)
+      let [xIter, xEnd] = minmax(ventLine.endpoint1.x, ventLine.endpoint2.x)
       for (; xIter <= xEnd; xIter++) {
         matrix[ventLine.endpoint1.y][xIter]++
         overlapping = matrix[ventLine.endpoint1.y][xIter] === 2 ? overlapping+1: overlapping
       }
     } else {
-
+      let [iter, iterEnd] = ventLine.endpoint1.x < ventLine.endpoint2.x ?
+        [ventLine.endpoint1, ventLine.endpoint2] :
+        [ventLine.endpoint2, ventLine.endpoint1]
+      if (iter.y > iterEnd.y) {
+        for (; iter.x <= iterEnd.x && iter.y >= iterEnd.y; iter.x++, iter.y--) {
+          matrix[iter.y][iter.x]++
+          overlapping = matrix[iter.y][iter.x] === 2 ? overlapping+1: overlapping
+        }
+      } else {
+        for (; iter.x <= iterEnd.x && iter.y <= iterEnd.y; iter.x++, iter.y++) {
+          matrix[iter.y][iter.x]++
+          overlapping = matrix[iter.y][iter.x] === 2 ? overlapping+1: overlapping
+        }
+      }
     }
   }
   return overlapping
 }
 
 function main() {
-  let [ventLines, matrix] = readData()
-  console.log("Solution to part 1 is: ", part1(ventLines, matrix))
+  console.log("The solution is: ", run(...readData()))
 }
 
 main()
+
