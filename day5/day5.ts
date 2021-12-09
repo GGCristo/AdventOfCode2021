@@ -10,7 +10,7 @@ type ventLine = {
   endpoint2: point,
 }
 
-function minmax<T>(a: T, b: T): [T, T] {
+function minmax(a: number, b: number): [number, number] {
   if (a < b) {
     return [a, b]
   }
@@ -87,3 +87,10 @@ function main() {
 
 main()
 
+// let iterX = ventLine.endpoint1.x
+// let iterY = ventLine.endpoint1.y
+// let incrementX = ventLine.endpoint1.x > ventLine.endpoint2.x ? -1 : 1
+// for (; iterX !== ventLine.endpoint2.x; iterX += incrementX, iterY += -incrementX) {
+//   matrix[iterY][iterX]++
+//   overlapping = matrix[iterY][iterX] === 2 ? overlapping+1: overlapping
+// }
