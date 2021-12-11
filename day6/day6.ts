@@ -6,26 +6,26 @@ const RESET_VALUE = 6
 
 function readData(): number[] {
   let input = fs.readFileSync("nearbyLanternfish.txt", "utf-8").split(",")
-  let fishNumbers = new Array(CICLE+1).fill(0)
+  let fishNumbersByCicle = new Array(CICLE+1).fill(0)
   for (let i of input) {
-    fishNumbers[parseInt(i)]++
+    fishNumbersByCicle[parseInt(i)]++
   }
-  return fishNumbers
+  return fishNumbersByCicle
 }
 
 function main() {
-  const fishNumbers = readData()
+  const fishNumbersByCicle = readData()
   for (let day = 0; day < DAYS; day++) {
-    const newBornsNumber = fishNumbers.shift()
+    const newBornsNumber = fishNumbersByCicle.shift()
     if (newBornsNumber !== undefined) {
-      fishNumbers.push(newBornsNumber)
-      fishNumbers[RESET_VALUE] += newBornsNumber
+      fishNumbersByCicle.push(newBornsNumber)
+      fishNumbersByCicle[RESET_VALUE] += newBornsNumber
     } else {
       console.log("Internal error")
       return
     }
   }
-  console.log(fishNumbers.reduce((count, element) => count + element))
+  console.log(fishNumbersByCicle.reduce((count, element) => count + element))
 }
 
 main()
