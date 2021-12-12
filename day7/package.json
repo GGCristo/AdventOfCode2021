@@ -11,8 +11,6 @@
   "license": "ISC",
   "dependencies": {
     "@types/node": "^16.11.12",
-    "is-odd": "^3.0.1",
-    "is-what": "^4.1.0",
     "median-quickselect": "^1.0.1",
     "typescript": "^4.5.3"
   }
