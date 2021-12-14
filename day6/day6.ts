@@ -1,4 +1,5 @@
-import * as fs from 'fs'
+// import * as fs from 'fs'
+import * as fs from "https://deno.land/std@0.117.0/fs"
 
 const DAYS = 256
 const CICLE = 8

@@ -1,5 +1,5 @@
 import * as fs from 'fs'
-import quickselect from 'median-quickselect'
+import quickselect from './median-quickselect'
 
 function partOne(input: number[]): number {
   const aligment = quickselect(input.slice())
